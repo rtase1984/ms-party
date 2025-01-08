@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,7 +23,7 @@ public record PartyRequestDto(
         String partyType,
         @NotNull(message = "individualName must not be null")
         IndividualPartyNameDto individualPartyName,
-        Optional<PartyPhoneDto> phone,
-        Optional<PartyEmailDto>  email,
+        List<PartyPhoneDto> phone,
+        List<PartyEmailDto>  email,
         Boolean duplicateCheck // Valor predeterminado gestionado en la lógica de negocio
 ) {}

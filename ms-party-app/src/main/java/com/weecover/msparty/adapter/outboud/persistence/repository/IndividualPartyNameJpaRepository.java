@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface IndividualPartyNameJpaRepository extends JpaRepository<IndividualPartyName, UUID>, IndividualPartyNameRepository {
-    IndividualPartyName saveName(IndividualPartyName name);
-    List<IndividualParty> findByFamilyNamesAndDeletedDateIsNull(String firstFamilyName, String secondFamilyName);
+public interface IndividualPartyNameJpaRepository extends JpaRepository<IndividualPartyName, UUID> {
+    Optional<IndividualPartyName> findByFirstFamilyNameAndSecondFamilyNameAndDeletedDateIsNull(String firstFamilyName, String secondFamilyName);
+
+    Optional<IndividualPartyName> findByLastNameAndDeletedDateIsNull(String lastName);
 }

@@ -1,13 +1,12 @@
 package com.weecover.msparty.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 
 import javax.persistence.*;
 
-@Table(name = "PARTY_PHONE", indexes = {
-        @Index(name = "IDX_PARTY_PHONE_PARTY_ID", columnList = "PARTY_ID")
-})
+@Table(name = "PARTY_PHONE")
 @Entity
 @Getter
 @Setter
@@ -15,9 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class PartyPhone extends BaseAuditEntity{
 
-    @JoinColumn(name = "PARTY_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private PartyHeader partyId;
+    @ManyToOne(targetEntity = IndividualParty.class)
+    @JoinColumn(name = "INDIVIDUAL_PARTY_ID")
+    @JsonBackReference
+    private IndividualParty individualParty;
 
     @Column(name = "PHONE_NUMBER", length = 15, nullable = false)
     private String phoneNumber;

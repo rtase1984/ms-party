@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,6 +16,11 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class IndividualPartyName extends PartyName {
+
+    @ManyToOne(targetEntity = IndividualParty.class)
+    @JoinColumn(name = "INDIVIDUAL_PARTY_ID")
+    @JsonBackReference
+    private IndividualParty individualParty;
 
     @Column(name = "NAME_TYPE", length = 3)
     private String nameType;
@@ -101,8 +104,4 @@ public class IndividualPartyName extends PartyName {
     @Column(name = "LAST_UPDATE")
     private Date lastUpdate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "PARTY_ID", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private IndividualParty individualParty;
 }

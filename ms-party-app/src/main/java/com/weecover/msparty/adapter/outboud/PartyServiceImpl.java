@@ -1,21 +1,19 @@
 package com.weecover.msparty.adapter.outboud;
 
-import com.weecover.msparty.adapter.inboud.rest.converter.IndividualPartyNameMapper;
 import com.weecover.msparty.adapter.inboud.rest.converter.PartyMapper;
 import com.weecover.msparty.adapter.inboud.rest.dto.IndividualPartyNameDto;
 import com.weecover.msparty.adapter.inboud.rest.dto.PartyRequestDto;
 import com.weecover.msparty.adapter.outboud.persistence.dto.IndividualPartyResponseDto;
 import com.weecover.msparty.adapter.outboud.persistence.dto.PartyResponseDto;
+import com.weecover.msparty.adapter.outboud.persistence.repository.IndividualPartyJpaRepository;
+import com.weecover.msparty.adapter.outboud.persistence.repository.IndividualPartyNameJpaRepository;
+import com.weecover.msparty.adapter.outboud.persistence.repository.PartyEmailJpaRepository;
+import com.weecover.msparty.adapter.outboud.persistence.repository.PartyPhoneJpaRepository;
 import com.weecover.msparty.domain.entities.IndividualParty;
 import com.weecover.msparty.domain.entities.IndividualPartyName;
-import com.weecover.msparty.domain.entities.PartyHeader;
 import com.weecover.msparty.domain.exception.DuplicatePartyException;
-import com.weecover.msparty.domain.port.IndividualPartyNameRepository;
-import com.weecover.msparty.domain.port.IndividualPartyRepository;
-import com.weecover.msparty.domain.port.PartyEmailRepository;
-import com.weecover.msparty.domain.port.PartyPhoneRepository;
 import com.weecover.msparty.domain.usecase.PartyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,26 +22,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class PartyServiceImpl implements PartyService {
 
-    private final IndividualPartyRepository individualPartyRepository;
-    @Autowired
-    private final IndividualPartyNameRepository nameRepository;
-
-    private final PartyEmailRepository emailRepository;
-    private final PartyPhoneRepository phoneRepository;
-    private final PartyMapper partyMapper;
-    private final IndividualPartyNameMapper individualPartyNameMapper;
-
-    public PartyServiceImpl(IndividualPartyRepository individualPartyRepository, IndividualPartyNameRepository nameRepository, PartyEmailRepository emailRepository, PartyPhoneRepository phoneRepository, PartyMapper partyMapper, IndividualPartyNameMapper individualPartyNameMapper) {
-        this.individualPartyRepository = individualPartyRepository;
-        this.nameRepository = nameRepository;
-        this.emailRepository = emailRepository;
-        this.phoneRepository = phoneRepository;
-        this.partyMapper = partyMapper;
-        this.individualPartyNameMapper = individualPartyNameMapper;
-    }
+    private final IndividualPartyJpaRepository individualPartyRepository;
+    private final IndividualPartyNameJpaRepository nameRepository;
+    private final PartyEmailJpaRepository emailRepository;
+    private final PartyPhoneJpaRepository phoneRepository;
 
     @Override
     public PartyResponseDto createIndividualParty(PartyRequestDto request) throws DuplicatePartyException {
@@ -55,7 +41,9 @@ public class PartyServiceImpl implements PartyService {
             }
         }
 
-        IndividualParty savedParty = individualPartyRepository.saveIndividualParty(partyMapper.toEntity(request));
+        IndividualParty individualParty = PartyMapper.INSTANCE.toEntity(request);
+
+        IndividualParty savedParty = individualPartyRepository.save(individualParty);
 
         PartyResponseDto response = new PartyResponseDto(""," ", savedParty.getId(), null, null);
         response.setStatus("created");
@@ -70,16 +58,25 @@ public class PartyServiceImpl implements PartyService {
             if ("with_family_names".equalsIgnoreCase(nameDto.nameType())) {
                 // Search by first and second family names
                 Optional.ofNullable(nameDto.firstFamilyName())
-                        .ifPresent(firstFamilyName ->
-                                duplicates.addAll(((nameRepository.findByFamilyNamesAndDeletedDateIsNull(
-                                        firstFamilyName, nameDto.secondFamilyName())))));
+                        .ifPresent(firstFamilyName -> {
+                                Optional<IndividualPartyName> partyName = nameRepository.findByFirstFamilyNameAndSecondFamilyNameAndDeletedDateIsNull(
+                                        firstFamilyName, nameDto.secondFamilyName());
+
+                                partyName.ifPresent(individualPartyName -> duplicates.add(individualPartyName.getIndividualParty()));
+
+                                });
             }
 
             if ("with_last_name".equalsIgnoreCase(nameDto.nameType())) {
                 // Search by last name
                 Optional.ofNullable(nameDto.lastName())
-                        .ifPresent(lastName -> duplicates.addAll(((nameRepository.findByFamilyNamesAndDeletedDateIsNull(nameDto.firstFamilyName(), nameDto.secondFamilyName())))));
-            }
+                        .ifPresent(lastName -> {
+                                Optional<IndividualPartyName> partyName = nameRepository.findByLastNameAndDeletedDateIsNull(lastName);
+
+                                partyName.ifPresent(individualPartyName -> duplicates.add(individualPartyName.getIndividualParty()));
+
+                            });
+                }
         }
         return duplicates;
     }
@@ -104,7 +101,7 @@ public class PartyServiceImpl implements PartyService {
 
     private PartyResponseDto buildDuplicateResponse(List<IndividualParty> duplicates) {
         // Mapeo de duplicados a un formato legible por el cliente
-        List<IndividualPartyResponseDto> duplicate = partyMapper.toResponseDtoList(duplicates);
+        List<IndividualPartyResponseDto> duplicate = PartyMapper.INSTANCE.toResponseDtoList(duplicates);
 
 
         PartyResponseDto response = new PartyResponseDto();

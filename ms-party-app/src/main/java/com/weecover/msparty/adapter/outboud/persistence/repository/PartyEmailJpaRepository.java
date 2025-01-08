@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PartyEmailJpaRepository extends JpaRepository<PartyEmail, UUID>, PartyEmailRepository {
-    PartyEmail saveEmail(PartyEmail email);
+public interface PartyEmailJpaRepository extends JpaRepository<PartyEmail, UUID> {
     Optional<PartyEmail> findByEmailAndDeletedDateIsNull(String email);
 }

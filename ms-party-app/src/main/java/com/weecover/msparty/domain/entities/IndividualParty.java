@@ -1,6 +1,5 @@
 package com.weecover.msparty.domain.entities;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-@Builder
 @Table(name = "INDIVIDUAL_PARTY")
 @Entity
 @Getter
@@ -17,8 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 public class IndividualParty extends PartyHeader {
 
-    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PartyName> partyNames;
+    @OneToMany(mappedBy = "individualParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<IndividualPartyName> partyNames;
+
+    @OneToMany(mappedBy = "individualParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PartyEmail> partyEmails;
+
+    @OneToMany(mappedBy = "individualParty", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PartyPhone> partyPhones;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)

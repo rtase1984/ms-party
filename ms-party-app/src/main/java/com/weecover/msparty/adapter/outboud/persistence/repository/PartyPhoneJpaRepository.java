@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PartyPhoneJpaRepository extends JpaRepository<PartyPhone, UUID>, PartyPhoneRepository {
-    PartyPhone savePhone(PartyPhone phone);
+public interface PartyPhoneJpaRepository extends JpaRepository<PartyPhone, UUID> {
     Optional<PartyPhone> findByPhoneNumberAndDeletedDateIsNull(String phone);
 }

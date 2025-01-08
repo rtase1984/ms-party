@@ -1,11 +1,10 @@
 package com.weecover.msparty.adapter.inboud.rest;
 
-
-import com.weecover.msparty.adapter.inboud.rest.converter.PartyMapper;
 import com.weecover.msparty.adapter.inboud.rest.dto.PartyRequestDto;
 import com.weecover.msparty.adapter.outboud.PartyServiceImpl;
 import com.weecover.msparty.adapter.outboud.persistence.dto.PartyResponseDto;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/party")
 public class PartyRestController {
-    private final PartyMapper partyMapper;
 
     private final PartyServiceImpl partyService;
-
-    public PartyRestController(PartyServiceImpl partyService, PartyMapper partyMapper) {
-        this.partyService = partyService;
-        this.partyMapper = partyMapper;
-    }
 
     @PostMapping
     public ResponseEntity<PartyResponseDto> createParty(@Valid @RequestBody PartyRequestDto partyRequest) {

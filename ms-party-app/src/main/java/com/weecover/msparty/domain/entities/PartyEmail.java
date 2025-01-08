@@ -1,18 +1,12 @@
 package com.weecover.msparty.domain.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 
 @Table(name = "PARTY_EMAIL")
@@ -20,10 +14,10 @@ import java.util.UUID;
 @Data
 public class PartyEmail extends BaseAuditEntity{
 
-    @JoinColumn(name = "PARTY_ID", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @NotNull
-    private PartyHeader partyId; // Relación con PartyHeader
+    @ManyToOne(targetEntity = IndividualParty.class)
+    @JoinColumn(name = "INDIVIDUAL_PARTY_ID")
+    @JsonBackReference
+    private IndividualParty individualParty;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "EFFECTIVE_DATE", nullable = false)
