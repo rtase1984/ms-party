@@ -1,0 +1,13 @@
+package com.weecover.msparty.adapter.inboud.rest.converter;
+
+import com.weecover.msparty.adapter.inboud.rest.dto.PartyPhoneDto;
+import com.weecover.msparty.adapter.inboud.rest.dto.PartyRequestDto;
+import com.weecover.msparty.domain.entities.PartyEmail;
+import com.weecover.msparty.domain.entities.PartyPhone;
+import org.mapstruct.Mapping;
+
+public interface PartyPhoneMapper {
+
+    @Mapping(source = "phoneNumber", target = "phoneNumber")
+    PartyPhone toEntity(PartyPhoneDto dto);
+}

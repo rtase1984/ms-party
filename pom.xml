@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.weecover.boot</groupId>
+    <artifactId>weecover-boot-parent</artifactId>
+    <version>2.5.1</version>
+  </parent>
+  <groupId>com.weecover</groupId>
+  <artifactId>ms-party</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <description>MsParty microservice</description>
+  <properties>
+    <app-tile.version>1.0.1</app-tile.version>
+    <postgres-tile.version>1.0.2</postgres-tile.version>
+    <s3-tile.version>1.0.1</s3-tile.version>
+  </properties>
+  <modules>
+    <module>ms-party-app</module>
+  </modules>
+</project>

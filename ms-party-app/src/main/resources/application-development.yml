@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/party_bd
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    platform: postgresql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    ddl-auto: update
+    show-sql: true
+
+  liquibase:
+    contexts: development  # Define los contextos específicos para el desarrollo

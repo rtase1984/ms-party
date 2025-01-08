@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db:5432/party_bd
+    username: prod_user
+    password: secure_password
+    driver-class-name: org.postgresql.Driver
+    platform: postgresql
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    ddl-auto: validate  # No modificar esquema automáticamente en producción
+    show-sql: false
+
+  liquibase:
+    contexts: production
