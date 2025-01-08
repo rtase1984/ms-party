@@ -4,7 +4,6 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-    platform: postgresql
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     ddl-auto: update
@@ -12,3 +11,6 @@ spring:
 
   liquibase:
     contexts: development  # Define los contextos específicos para el desarrollo
+  sql:
+    init:
+      platform: postgresql
