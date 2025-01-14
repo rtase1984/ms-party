@@ -1,7 +1,6 @@
 package com.weecover.msparty.adapter.outboud.persistence.repository;
 
 import com.weecover.msparty.domain.entities.PartyEmail;
-import com.weecover.msparty.domain.port.PartyEmailRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,21 @@
 package com.weecover.msparty.adapter.inboud.rest.dto;
 
-import javax.validation.constraints.Email;
+import com.weecover.msparty.adapter.inboud.rest.dto.dto.IndividualPartyDto;
+import lombok.*;
+import java.util.*;
 
-public record PartyEmailDto(
-        @Email(message = "Email must be a valid format (e.g., user@example.com).")
-        String email
-) {}
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PartyEmailDto {
+
+    private IndividualPartyDto individualParty;
+    private Date effectiveDate;
+    private Date expirationDate;
+    private String emailType;
+    private String email;
+    private Boolean isPrimary;
+    private String comments;
+
+}

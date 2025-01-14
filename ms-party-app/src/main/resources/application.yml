@@ -1,24 +1,33 @@
 spring:
   application:
-    name: msParty
-  liquibase:
-    default-schema: public
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
-  profiles:
-    active: development  # Activa el perfil por defecto (puedes sobrescribir con variables de entorno)
+    name: ms-party-app
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/party_bd
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
-com:
-  weecover:
-    msparty:
-      thirdparty:
-        url: http://example.com/api
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    contexts: development
+    default-schema: public
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+  sql:
+    init:
+      platform: postgresql
 
 logging:
   level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        BasicBinder: TRACE
-        transaction: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.engine.jdbc.spi.SqlExceptionHelper: DEBUG

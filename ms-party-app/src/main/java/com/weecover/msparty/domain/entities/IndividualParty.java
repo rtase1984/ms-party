@@ -1,9 +1,10 @@
 package com.weecover.msparty.domain.entities;
 
+import com.weecover.msparty.domain.model.MAS_ENUM;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -33,9 +34,10 @@ public class IndividualParty extends PartyHeader {
     @Column(name = "GENDER", length = 3)
     private String gender;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "MARITAL_STATUS", length = 3)
     @NotNull
-    private String maritalStatus;
+    private MAS_ENUM maritalStatus;
 
     @NotNull
     @Column(name = "PROFESSION", length = 3)

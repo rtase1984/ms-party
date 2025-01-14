@@ -2,10 +2,10 @@ package com.weecover.msparty.adapter.inboud.rest.converter;
 
 import com.weecover.msparty.adapter.inboud.rest.dto.IndividualPartyNameDto;
 import com.weecover.msparty.domain.entities.IndividualPartyName;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+
 
 @Mapper(componentModel = "spring")
 public interface IndividualPartyNameMapper {
@@ -21,4 +21,15 @@ public interface IndividualPartyNameMapper {
 
     @InheritInverseConfiguration
     abstract IndividualPartyNameDto toDto(IndividualPartyName entity);
+
+
+    @AfterMapping
+    default void assignRandomValues(@MappingTarget IndividualPartyName individualPartyName, IndividualPartyNameDto dto) {
+        // Genera valores aleatorios para campos que no estén presentes en la request pero sean @NotNull
+        if (individualPartyName.getCountry() == null) {
+            individualPartyName.setCountry(RandomStringUtils.randomAlphabetic(3)); // Valor aleatorio
+        }
+    }
 }
+
+

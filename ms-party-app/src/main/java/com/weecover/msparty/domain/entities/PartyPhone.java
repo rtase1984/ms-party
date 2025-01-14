@@ -1,10 +1,8 @@
 package com.weecover.msparty.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
-
-
 import javax.persistence.*;
+import lombok.*;
 
 @Table(name = "PARTY_PHONE")
 @Entity

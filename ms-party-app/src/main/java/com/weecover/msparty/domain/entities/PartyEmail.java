@@ -1,11 +1,11 @@
 package com.weecover.msparty.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 

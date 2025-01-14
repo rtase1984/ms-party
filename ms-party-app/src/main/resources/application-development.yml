@@ -1,16 +1,31 @@
 spring:
+  application:
+    name: ms-party-app  # Nombre de la aplicación para el perfil de desarrollo
+
   datasource:
     url: jdbc:postgresql://localhost:5432/party_bd
     username: postgres
-    password: admin
+    password: postgres
     driver-class-name: org.postgresql.Driver
+
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   liquibase:
-    contexts: development  # Define los contextos específicos para el desarrollo
+    contexts: development
+
   sql:
     init:
       platform: postgresql
+
+logging:
+   level:
+     org.hibernate.SQL: DEBUG
+     org.hibernate.type.descriptor.sql: TRACE
+     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+     org.hibernate.engine.jdbc.spi.SqlExceptionHelper: DEBUG
+

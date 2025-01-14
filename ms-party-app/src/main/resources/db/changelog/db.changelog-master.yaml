@@ -13,6 +13,7 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(255)
+
   - changeSet:
       id: 2
       author: developer
@@ -23,3 +24,69 @@ databaseChangeLog:
               - column:
                   name: description
                   type: text
+
+  - changeSet:
+      id: create-soundex-function
+      author: ramon.ramirez
+      changes:
+        - sql:
+            stripComments: true
+            splitStatements: false
+            endDelimiter: ";"
+            sql: |
+              CREATE OR REPLACE FUNCTION update_soundex_fields()
+              RETURNS TRIGGER AS $$
+              BEGIN
+                  IF NEW.name IS NOT NULL THEN
+                      NEW.soundex_name := soundex(NEW.name);
+                  ELSE
+                      NEW.soundex_name := NULL;
+                  END IF;
+
+                  IF NEW.middle_name IS NOT NULL THEN
+                      NEW.soundex_middle_name := soundex(NEW.middle_name);
+                  ELSE
+                      NEW.soundex_middle_name := NULL;
+                  END IF;
+
+                  IF NEW.last_name IS NOT NULL THEN
+                      NEW.soundex_last_name := soundex(NEW.last_name);
+                  ELSE
+                      NEW.soundex_last_name := NULL;
+                  END IF;
+
+                  IF NEW.first_family_name IS NOT NULL THEN
+                      NEW.soundex_first_family_name := soundex(NEW.first_family_name);
+                  ELSE
+                      NEW.soundex_first_family_name := NULL;
+                  END IF;
+
+                  IF NEW.second_family_name IS NOT NULL THEN
+                      NEW.soundex_second_family_name := soundex(NEW.second_family_name);
+                  ELSE
+                      NEW.soundex_second_family_name := NULL;
+                  END IF;
+
+                  IF NEW.other_family_name IS NOT NULL THEN
+                      NEW.soundex_other_family_name := soundex(NEW.other_family_name);
+                  ELSE
+                      NEW.soundex_other_family_name := NULL;
+                  END IF;
+
+                  RETURN NEW;
+              END;
+              $$ LANGUAGE plpgsql;
+
+  - changeSet:
+      id: create-soundex-trigger
+      author: ramon.ramirez
+      changes:
+        - sql:
+            stripComments: true
+            splitStatements: false
+            endDelimiter: ";"
+            sql: |
+              CREATE TRIGGER trigger_update_soundex
+              BEFORE INSERT OR UPDATE ON individual_party_name
+              FOR EACH ROW
+              EXECUTE FUNCTION update_soundex_fields();

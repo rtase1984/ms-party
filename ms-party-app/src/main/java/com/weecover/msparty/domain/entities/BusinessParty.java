@@ -1,16 +1,10 @@
 package com.weecover.msparty.domain.entities;
 
-import com.weecover.msparty.domain.model.BPT_ENUM;
-import com.weecover.msparty.domain.model.CON_ENUM;
-import com.weecover.msparty.domain.model.REG_ENUM;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 
 import java.util.Date;
 

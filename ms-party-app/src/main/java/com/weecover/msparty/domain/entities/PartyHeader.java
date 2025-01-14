@@ -2,15 +2,13 @@ package com.weecover.msparty.domain.entities;
 
 import com.weecover.msparty.domain.model.COU_ENUM;
 import com.weecover.msparty.domain.model.PTY_ENUM;
+import com.weecover.msparty.domain.model.converter.PTYEnumConverter;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 
 
 @MappedSuperclass
@@ -23,8 +21,9 @@ public abstract class PartyHeader extends BaseAuditEntity{
     private String externalId;
 
     @Enumerated(EnumType.STRING)
+    @Convert(converter = PTYEnumConverter.class)
     @NotNull
-    @Column(name = "PARTY_TYPE", nullable = false, length = 3)
+    @Column(name = "PARTY_TYPE", nullable = false, length = 20) //length = 3
     private PTY_ENUM partyType;
 
     @Column(name = "PARTY_SUB_TYPE", length = 3)

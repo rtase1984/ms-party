@@ -3,8 +3,8 @@ package com.weecover.msparty.domain.model;
 
 public enum PTY_ENUM{
 
-    INDIVIDUAL("IND"),
-    BUSINESS("BUS");
+    IND("INDIVIDUAL"),
+    BUS("BUSINESS");
 
     private final String id;
 
